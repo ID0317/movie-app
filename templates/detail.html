@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ movie.title }} - 豆瓣电影</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <a href="/" class="back-link">← 返回列表</a>
+
+        <div class="detail-card">
+            <h1 class="detail-title">{{ movie.title }}</h1>
+
+            <div class="detail-stats">
+                <div class="stat">
+                    <span class="stat-label">排名</span>
+                    <span class="stat-value">No.{{ movie.rank }}</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">评分</span>
+                    <span class="stat-value rating-big">{{ movie.rating }}</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">评价人数</span>
+                    <span class="stat-value">{{ movie.rating_people }} 人</span>
+                </div>
+            </div>
+
+            {% if movie.quote %}
+            <div class="detail-quote">
+                <p>{{ movie.quote }}</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
