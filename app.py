@@ -103,7 +103,7 @@ def movie_detail(rank):
 if __name__ == "__main__":
     import sys
     # 自动适配：本地用 debug 模式，部署时用生产模式
-    is_production = "--prod" in sys.argv
+    is_production = "--prod" in sys.argv or "RENDER" in os.environ
 
     if is_production:
         # 生产模式：Render / 云平台
