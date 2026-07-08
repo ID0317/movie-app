@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>科技新闻 - Hacker News 聚合</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- 导航栏 -->
+        <nav class="navbar">
+            <a href="/" class="nav-brand">MovieApp</a>
+            <div class="nav-links">
+                <a href="/" class="nav-link">电影榜单</a>
+                <a href="/news" class="nav-link active">科技新闻</a>
+                {% if current_user.is_authenticated %}
+                <span class="nav-user">{{ current_user.username }}</span>
+                <a href="/logout" class="nav-link">退出</a>
+                {% else %}
+                <a href="/login" class="nav-link">登录</a>
+                <a href="/register" class="nav-link">注册</a>
+                {% endif %}
+            </div>
+        </nav>
+
+        <!-- 头部 -->
+        <header>
+            <h1>科技新闻</h1>
+            <p class="subtitle">
+                来源：Hacker News
+                {% if last_scrape %}
+                · 最近更新：{{ last_scrape }}
+                {% else %}
+                · 暂无数据
+                {% endif %}
+                {% if scheduler_info.running %}
+                · <span class="auto-badge">🕐 每 {{ scheduler_info.interval_minutes }} 分钟自动刷新</span>
+                · 下次：{{ scheduler_info.next_run }}
+                {% endif %}
+            </p>
+        </header>
+
+        <!-- Flash 消息 -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div class="flash-container">
+            {% for category, message in messages %}
+            <div class="flash flash-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
+
+        <!-- 刷新按钮 -->
+        <div class="toolbar">
+            {% if current_user.is_authenticated %}
+            <form method="post" action="/news/refresh" style="display:inline;">
+                <button type="submit" class="btn btn-add">🔄 刷新新闻</button>
+            </form>
+            <span class="hint">点击按钮自动抓取 Hacker News 最新文章</span>
+            {% else %}
+            <a href="/login" class="btn btn-add">登录后可刷新</a>
+            <span class="hint">登录后即可抓取最新文章</span>
+            {% endif %}
+        </div>
+
+        <!-- 文章列表 -->
+        <div class="article-list">
+            {% if articles %}
+                {% for article in articles %}
+                <div class="article-card">
+                    <div class="article-main">
+                        <a href="{{ article.url }}" target="_blank" class="article-title"
+                           rel="noopener noreferrer">
+                            {{ article.title }}
+                        </a>
+                        <div class="article-meta">
+                            <span class="article-source">{{ article.source }}</span>
+                        </div>
+                    </div>
+                    <div class="article-stats">
+                        <span class="stat-points">👍 {{ article.points }}</span>
+                        <span class="stat-comments">💬 {{ article.comments }}</span>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="empty">
+                    <p>还没有新闻数据</p>
+                    <p>点击上方 "🔄 刷新新闻" 按钮，让爬虫去抓取最新文章</p>
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- 技术说明 -->
+        <div class="tech-note">
+            <h3>这背后发生了什么？</h3>
+            <ol>
+                <li>你点 <strong>"刷新新闻"</strong> → 触发 <code>/news/refresh</code> 路由</li>
+                <li>服务器调用 <code>scrape_hackernews()</code> → 爬虫抓取 Hacker News</li>
+                <li>解析出标题、链接、点赞数 → 调用 <code>save_articles()</code> 写入 SQLite</li>
+                <li>重定向回 <code>/news</code> → 从数据库读出最新数据 → 你看到这一页</li>
+            </ol>
+            <p class="pipeline-summary">
+                <strong>完整链路：</strong>
+                用户点击 → Flask 路由 → 爬虫抓取 → 数据库存储 → 模板渲染 → 用户看到
+            </p>
+        </div>
+    </div>
+</body>
+</html>

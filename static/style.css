@@ -19,6 +19,42 @@ body {
     padding: 20px;
 }
 
+/* --- 导航栏 --- */
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #2c3e50;
+    padding: 0 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.nav-brand {
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+    padding: 14px 0;
+}
+
+.nav-links { display: flex; }
+
+.nav-link {
+    color: #bbb;
+    text-decoration: none;
+    padding: 14px 16px;
+    font-size: 14px;
+    transition: color 0.2s, background 0.2s;
+}
+
+.nav-link:hover { color: #fff; background: rgba(255,255,255,0.1); }
+
+.nav-link.active {
+    color: #fff;
+    background: rgba(255,255,255,0.15);
+}
+
 /* --- 头部 --- */
 header { text-align: center; padding: 30px 0 20px; }
 
@@ -144,6 +180,141 @@ header h1 {
 
 .rating-people { font-size: 12px; color: #bbb; }
 
+/* --- 按钮 --- */
+.btn {
+    display: inline-block;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    text-decoration: none;
+    font-family: inherit;
+    transition: background 0.2s;
+}
+
+.btn-add {
+    background: #27ae60;
+    color: #fff;
+    white-space: nowrap;
+    padding: 10px 20px;
+    font-size: 15px;
+}
+.btn-add:hover { background: #219a52; }
+
+.btn-sm { padding: 4px 10px; font-size: 12px; }
+
+.btn-edit {
+    background: #3498db;
+    color: #fff;
+}
+.btn-edit:hover { background: #2980b9; }
+
+.btn-delete {
+    background: #e74c3c;
+    color: #fff;
+}
+.btn-delete:hover { background: #c0392b; }
+
+.btn-submit {
+    background: #27ae60;
+    color: #fff;
+    padding: 10px 24px;
+    font-size: 15px;
+}
+.btn-submit:hover { background: #219a52; }
+
+.btn-cancel {
+    background: #eee;
+    color: #666;
+    padding: 10px 24px;
+    font-size: 15px;
+}
+.btn-cancel:hover { background: #ddd; }
+
+/* --- 工具栏 --- */
+.toolbar {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+    align-items: flex-start;
+}
+
+.toolbar .search-bar { flex: 1; margin-bottom: 0; }
+
+/* --- 电影操作按钮组 --- */
+.movie-actions {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+}
+
+/* --- Flash 消息 --- */
+.flash-container { margin-bottom: 16px; }
+
+.flash {
+    padding: 10px 16px;
+    border-radius: 6px;
+    margin-bottom: 6px;
+    font-size: 14px;
+}
+
+.flash-success {
+    background: #e8f5e9;
+    color: #2e7d32;
+    border: 1px solid #a5d6a7;
+}
+
+.flash-error {
+    background: #fce4ec;
+    color: #c62828;
+    border: 1px solid #ef9a9a;
+}
+
+/* --- 表单 --- */
+.movie-form {
+    background: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    max-width: 600px;
+}
+
+.form-group { margin-bottom: 20px; }
+
+.form-group label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: #555;
+    margin-bottom: 6px;
+}
+
+.required { color: #e74c3c; }
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 10px 14px;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    font-size: 15px;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus { border-color: #27ae60; }
+
+.form-group textarea { resize: vertical; }
+
+.form-actions {
+    display: flex;
+    gap: 10px;
+    padding-top: 10px;
+}
+
 /* --- 空状态 --- */
 .empty {
     text-align: center;
@@ -204,4 +375,178 @@ header h1 {
     border-top: 1px solid #eee;
     padding-top: 20px;
     margin-top: 10px;
+}
+
+/* --- 文章卡片（新闻页） --- */
+.article-list { margin-bottom: 30px; }
+
+.article-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: #fff;
+    padding: 14px 20px;
+    margin-bottom: 6px;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    transition: box-shadow 0.2s;
+}
+
+.article-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+
+.article-main { flex: 1; }
+
+.article-title {
+    font-size: 15px;
+    color: #2c3e50;
+    text-decoration: none;
+    font-weight: 500;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.article-title:hover { color: #e67e22; }
+
+.article-meta { font-size: 12px; color: #aaa; }
+
+.article-source {
+    background: #f0f0f0;
+    padding: 2px 8px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    font-size: 11px;
+}
+
+.article-stats {
+    display: flex;
+    gap: 14px;
+    font-size: 13px;
+    color: #888;
+    white-space: nowrap;
+}
+
+.stat-points { color: #e67e22; }
+.stat-comments { color: #3498db; }
+
+/* --- 提示文字 --- */
+.hint {
+    font-size: 13px;
+    color: #999;
+    align-self: center;
+}
+
+/* --- 技术说明卡片 --- */
+.tech-note {
+    background: #fef9e7;
+    border: 1px solid #f9e79f;
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin-top: 20px;
+}
+
+.tech-note h3 {
+    font-size: 15px;
+    color: #7d6608;
+    margin-bottom: 10px;
+}
+
+.tech-note ol {
+    padding-left: 20px;
+    font-size: 13px;
+    color: #666;
+    line-height: 1.8;
+}
+
+.tech-note code {
+    background: #fdebd0;
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-size: 12px;
+    color: #c0392b;
+}
+
+.pipeline-summary {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px dashed #f9e79f;
+    font-size: 14px;
+    color: #7d6608;
+}
+
+/* --- 导航栏用户信息 --- */
+.nav-user {
+    color: #f1c40f;
+    padding: 14px 8px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+/* --- 登录/注册卡片 --- */
+.auth-card {
+    max-width: 400px;
+    margin: 40px auto;
+    background: #fff;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+}
+
+.auth-title {
+    text-align: center;
+    font-size: 24px;
+    color: #2c3e50;
+    margin-bottom: 30px;
+}
+
+.auth-form { margin-bottom: 20px; }
+
+.checkbox-label {
+    display: flex !important;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: #888;
+    cursor: pointer;
+}
+
+.checkbox-label input[type="checkbox"] {
+    width: auto;
+    margin: 0;
+}
+
+.btn-block {
+    width: 100%;
+    text-align: center;
+}
+
+.auth-switch {
+    text-align: center;
+    font-size: 14px;
+    color: #999;
+}
+
+.auth-switch a {
+    color: #3498db;
+    text-decoration: none;
+}
+
+.auth-switch a:hover { text-decoration: underline; }
+
+/* --- 未登录时的操作提示 --- */
+.login-hint {
+    color: #999;
+    font-size: 13px;
+    text-decoration: none;
+}
+
+.login-hint:hover { color: #3498db; }
+
+/* --- 定时任务状态 --- */
+.auto-badge {
+    background: #e8f5e9;
+    color: #2e7d32;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 500;
 }

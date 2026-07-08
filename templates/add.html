@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>添加电影 - 豆瓣电影 Top 250</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- 导航栏 -->
+        <nav class="navbar">
+            <a href="/" class="nav-brand">MovieApp</a>
+            <div class="nav-links">
+                <a href="/" class="nav-link active">电影榜单</a>
+                <a href="/news" class="nav-link">科技新闻</a>
+                {% if current_user.is_authenticated %}
+                <span class="nav-user">{{ current_user.username }}</span>
+                <a href="/logout" class="nav-link">退出</a>
+                {% else %}
+                <a href="/login" class="nav-link">登录</a>
+                <a href="/register" class="nav-link">注册</a>
+                {% endif %}
+            </div>
+        </nav>
+
+        <header>
+            <h1>添加电影</h1>
+        </header>
+
+        <!-- Flash 消息 -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div class="flash-container">
+            {% for category, message in messages %}
+            <div class="flash flash-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
+
+        <a href="/" class="back-link">← 返回首页</a>
+
+        <form method="post" class="movie-form">
+            <div class="form-group">
+                <label for="title">电影名称 <span class="required">*</span></label>
+                <input type="text" id="title" name="title"
+                       value="{{ title }}" placeholder="例如：肖申克的救赎" required>
+            </div>
+
+            <div class="form-group">
+                <label for="rating">评分 <span class="required">*</span></label>
+                <input type="number" id="rating" name="rating"
+                       value="{{ rating }}" placeholder="例如：9.7"
+                       step="0.1" min="0" max="10" required>
+            </div>
+
+            <div class="form-group">
+                <label for="rating_people">评价人数</label>
+                <input type="text" id="rating_people" name="rating_people"
+                       value="{{ rating_people }}" placeholder="例如：3300250">
+            </div>
+
+            <div class="form-group">
+                <label for="quote">经典台词</label>
+                <textarea id="quote" name="quote" rows="3"
+                          placeholder="例如：希望让人自由。">{{ quote }}</textarea>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-submit">添加电影</button>
+                <a href="/" class="btn btn-cancel">取消</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

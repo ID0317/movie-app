@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>注册 - MovieApp</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <nav class="navbar">
+            <a href="/" class="nav-brand">MovieApp</a>
+            <div class="nav-links">
+                <a href="/" class="nav-link">电影榜单</a>
+                <a href="/news" class="nav-link">科技新闻</a>
+            </div>
+        </nav>
+
+        <div class="auth-card">
+            <h1 class="auth-title">注册</h1>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            <div class="flash-container">
+                {% for category, message in messages %}
+                <div class="flash flash-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            {% endwith %}
+
+            <form method="post" class="auth-form">
+                <div class="form-group">
+                    <label for="username">用户名</label>
+                    <input type="text" id="username" name="username"
+                           value="{{ username }}"
+                           placeholder="至少2个字符" required autofocus>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">密码</label>
+                    <input type="password" id="password" name="password"
+                           placeholder="至少4个字符" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password2">确认密码</label>
+                    <input type="password" id="password2" name="password2"
+                           placeholder="再次输入密码" required>
+                </div>
+
+                <button type="submit" class="btn btn-submit btn-block">注 册</button>
+            </form>
+
+            <p class="auth-switch">
+                已有账号？<a href="/login">立即登录</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>
