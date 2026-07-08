@@ -57,38 +57,39 @@ def start_scheduler():
     启动后台调度器。
 
     在 Flask 启动时调用一次即可。
-    atexit 注册退出时自动关闭调度器，防止进程卡住。
+    如果启动失败（比如 PythonAnywhere 免费版限制），不影响网站运行。
     """
-    # 添加定时任务
-    scheduler.add_job(
-        func=auto_refresh_news,
-        trigger=IntervalTrigger(minutes=REFRESH_MINUTES),
-        id="auto_refresh_news",
-        name="自动刷新新闻",
-        replace_existing=True,
-    )
-
-    # 启动
-    scheduler.start()
-    atexit.register(lambda: scheduler.shutdown(wait=False))
-
-    print(f"[调度器] 已启动，每 {REFRESH_MINUTES} 分钟自动刷新新闻")
+    try:
+        scheduler.add_job(
+            func=auto_refresh_news,
+            trigger=IntervalTrigger(minutes=REFRESH_MINUTES),
+            id="auto_refresh_news",
+            name="自动刷新新闻",
+            replace_existing=True,
+        )
+        scheduler.start()
+        atexit.register(lambda: scheduler.shutdown(wait=False))
+        print(f"[调度器] 已启动，每 {REFRESH_MINUTES} 分钟自动刷新新闻")
+    except Exception as e:
+        print(f"[调度器] 启动失败（不影响网站运行）：{e}")
 
 
 def get_scheduler_info():
     """
     返回调度器运行状态（给网页用）。
     """
-    job = scheduler.get_job("auto_refresh_news")
-    if job is None:
-        return {"running": False}
-
-    next_run = job.next_run_time
-    return {
-        "running": scheduler.running,
-        "interval_minutes": REFRESH_MINUTES,
-        "next_run": next_run.strftime("%H:%M:%S") if next_run else "无",
-    }
+    try:
+        job = scheduler.get_job("auto_refresh_news")
+        if job is None:
+            return {"running": False, "interval_minutes": REFRESH_MINUTES, "next_run": "无"}
+        next_run = job.next_run_time
+        return {
+            "running": scheduler.running,
+            "interval_minutes": REFRESH_MINUTES,
+            "next_run": next_run.strftime("%H:%M:%S") if next_run else "无",
+        }
+    except Exception:
+        return {"running": False, "interval_minutes": REFRESH_MINUTES, "next_run": "无"}
 
 
 # ============================================================

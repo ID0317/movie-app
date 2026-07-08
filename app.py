@@ -93,8 +93,11 @@ if count_movies() == 0:
 
 print(f"数据库就绪，共 {count_movies()} 部电影")
 
-# 启动后台定时任务
-start_scheduler()
+# 启动后台定时任务（失败不影响网站运行）
+try:
+    start_scheduler()
+except Exception as e:
+    print(f"[启动] 调度器启动失败（不影响网站）：{e}")
 
 
 # ============================================================
