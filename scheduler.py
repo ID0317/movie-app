@@ -18,15 +18,16 @@
 import os
 import atexit
 from datetime import datetime
-from apscheduler.schedulers.background import BackgroundScheduler
-from apscheduler.triggers.interval import IntervalTrigger
+
+# apscheduler 是可选依赖，延迟导入
+# （PythonAnywhere 的 WSGI 有时找不到用户安装的包）
 
 
 # 自动刷新间隔（分钟），可通过环境变量配置
 REFRESH_MINUTES = int(os.environ.get("NEWS_REFRESH", "30"))
 
-# 全局调度器实例
-scheduler = BackgroundScheduler()
+# 全局调度器实例（延迟初始化）
+scheduler = None
 
 
 def auto_refresh_news():
@@ -56,10 +57,16 @@ def start_scheduler():
     """
     启动后台调度器。
 
-    在 Flask 启动时调用一次即可。
-    如果启动失败（比如 PythonAnywhere 免费版限制），不影响网站运行。
+    如果 apscheduler 没安装或 PythonAnywhere 限制，不影响网站运行。
     """
     try:
+        from apscheduler.schedulers.background import BackgroundScheduler
+        from apscheduler.triggers.interval import IntervalTrigger
+
+        # 创建调度器实例
+        global scheduler
+        scheduler = BackgroundScheduler()
+
         scheduler.add_job(
             func=auto_refresh_news,
             trigger=IntervalTrigger(minutes=REFRESH_MINUTES),
@@ -70,6 +77,8 @@ def start_scheduler():
         scheduler.start()
         atexit.register(lambda: scheduler.shutdown(wait=False))
         print(f"[调度器] 已启动，每 {REFRESH_MINUTES} 分钟自动刷新新闻")
+    except ImportError:
+        print("[调度器] apscheduler 未安装，定时功能不可用（网站正常运行）")
     except Exception as e:
         print(f"[调度器] 启动失败（不影响网站运行）：{e}")
 
@@ -78,6 +87,9 @@ def get_scheduler_info():
     """
     返回调度器运行状态（给网页用）。
     """
+    if scheduler is None:
+        return {"running": False, "interval_minutes": REFRESH_MINUTES, "next_run": "无"}
+
     try:
         job = scheduler.get_job("auto_refresh_news")
         if job is None:
